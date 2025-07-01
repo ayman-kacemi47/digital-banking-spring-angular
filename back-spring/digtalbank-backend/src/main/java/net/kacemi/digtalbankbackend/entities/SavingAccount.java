@@ -14,6 +14,5 @@ import java.math.BigDecimal;
 @DiscriminatorValue("SA")
 @AllArgsConstructor
 public class SavingAccount extends BankAccount {
-    @Column(precision = 25, scale = 2)
-    private BigDecimal interestRate;
+    private double interestRate;
 }

@@ -1,5 +1,7 @@
 package net.kacemi.digtalbankbackend;
 
+import net.kacemi.digtalbankbackend.dtos.BankAccountDTO;
+import net.kacemi.digtalbankbackend.dtos.CustomerDTO;
 import net.kacemi.digtalbankbackend.entities.*;
 import net.kacemi.digtalbankbackend.enums.AccountStatus;
 import net.kacemi.digtalbankbackend.enums.OperationType;
@@ -44,7 +46,7 @@ public class DigtalbankBackendApplication {
             CommandLineRunner testBankAccountService(BankAccountService bankAccountService) {
         return args -> {
             Stream.of("Mohamed","Ayman","Hiba","Malak","Youssef","Aicha").forEach(name -> {
-                Customer customer = new Customer();
+                CustomerDTO customer = new CustomerDTO();
                 customer.setId(UUID.randomUUID().toString());//car ID est de type string donc je dois le faire mannuellement
                 customer.setName(name);
                 customer.setEmail(name + "@kacemi.net");
@@ -66,9 +68,9 @@ public class DigtalbankBackendApplication {
 
                 }else{
                     BigDecimal initBalance = randomNumber.multiply(BigDecimal.valueOf(3112*3500));
-                    BigDecimal intrestRate = randomNumber.multiply(BigDecimal.valueOf(3112));
+
                     try {
-                        bankAccountService.saveSavingAccount(initBalance, intrestRate, customer.getId());
+                        bankAccountService.saveSavingAccount(initBalance, Math.random()*10, customer.getId());
                     } catch (CustomerNotFoundException e) {
                        // throw new RuntimeException(e);
                         e.printStackTrace();
@@ -76,12 +78,12 @@ public class DigtalbankBackendApplication {
                     }
 
                 }
-                List<BankAccount> bankAccounts = bankAccountService.listBankAccounts();
-                for(BankAccount bankAccount : bankAccounts) {
+                List<BankAccountDTO> bankAccountDTOs = bankAccountService.listBankAccounts();
+                for(BankAccountDTO bankAccountDTO : bankAccountDTOs) {
                     for(int i = 0 ; i < 10 ; i++){
                         try {
-                            bankAccountService.credit(bankAccount.getId(), 1000+Math.random()*12444, "Crédit");
-                        bankAccountService.debit(bankAccount.getId(), 1000+Math.random()*12444, "débit");
+                            bankAccountService.credit(bankAccountDTO.getId(), 1000+Math.random()*12444, "Crédit");
+                        bankAccountService.debit(bankAccountDTO.getId(), 1000+Math.random()*12444, "débit");
                         } catch (BankAccountNotFoundException  | NotEnoughBalanceException e) {
                            // throw new RuntimeException(e);
                             e.printStackTrace();
@@ -163,7 +165,7 @@ public class DigtalbankBackendApplication {
                     savingAccount.setCurrency("MAD");
                     savingAccount.setCustomer(customer);
                     savingAccount.setStatus(AccountStatus.CREATED);
-                    savingAccount.setInterestRate(randomNumber.multiply(BigDecimal.valueOf(3112)) );
+                    savingAccount.setInterestRate(Math.random() );
 
                     bankAccountRepository.save(savingAccount);
 

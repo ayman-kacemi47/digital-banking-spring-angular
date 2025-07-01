@@ -1,5 +1,9 @@
 package net.kacemi.digtalbankbackend.services;
 
+import net.kacemi.digtalbankbackend.dtos.BankAccountDTO;
+import net.kacemi.digtalbankbackend.dtos.CurrentAccountDTO;
+import net.kacemi.digtalbankbackend.dtos.CustomerDTO;
+import net.kacemi.digtalbankbackend.dtos.SavingAccountDTO;
 import net.kacemi.digtalbankbackend.entities.CurrentAccount;
 import net.kacemi.digtalbankbackend.entities.Customer;
 import net.kacemi.digtalbankbackend.entities.SavingAccount;
@@ -12,12 +16,12 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface BankAccountService{
-    Customer saveCustomer(Customer customer);
-    CurrentAccount saveCurrentAccount(BigDecimal initialBalance, BigDecimal overDraft, String customerId) throws CustomerNotFoundException;
-    SavingAccount saveSavingAccount(BigDecimal initialBalance, BigDecimal interestRate, String customerId) throws  CustomerNotFoundException;
-    List<Customer> listCustomers();
-    List<BankAccount> listBankAccounts();
-    BankAccount getBankAccount(String bankAccountId) throws BankAccountNotFoundException;
+    CustomerDTO saveCustomer(CustomerDTO customerDTO);
+    CurrentAccountDTO saveCurrentAccount(BigDecimal initialBalance, BigDecimal overDraft, String customerId) throws CustomerNotFoundException;
+    SavingAccountDTO saveSavingAccount(BigDecimal initialBalance, double interestRate, String customerId) throws  CustomerNotFoundException;
+    List<CustomerDTO> listCustomers();
+    List<BankAccountDTO> listBankAccounts();
+    BankAccountDTO getBankAccount(String bankAccountId) throws BankAccountNotFoundException;
     void debit(String bankAccountId, double amount, String description) throws BankAccountNotFoundException, NotEnoughBalanceException;
     void credit(String bankAccountId, double amount, String description) throws BankAccountNotFoundException;
     void transfer(String fromBankAccountId, String toBankAccountId, double amount, String description) throws BankAccountNotFoundException, NotEnoughBalanceException;
