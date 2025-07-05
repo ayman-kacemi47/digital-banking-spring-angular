@@ -15,8 +15,13 @@ import net.kacemi.digtalbankbackend.excepetions.NotEnoughBalanceException;
 import java.math.BigDecimal;
 import java.util.List;
 
+
 public interface BankAccountService{
     CustomerDTO saveCustomer(CustomerDTO customerDTO);
+    CustomerDTO updateCustomer(CustomerDTO customerDTO);
+    void deleteCustomer(String id) throws CustomerNotFoundException;
+
+    CustomerDTO getCustomer(String customerId) throws CustomerNotFoundException;
     CurrentAccountDTO saveCurrentAccount(BigDecimal initialBalance, BigDecimal overDraft, String customerId) throws CustomerNotFoundException;
     SavingAccountDTO saveSavingAccount(BigDecimal initialBalance, double interestRate, String customerId) throws  CustomerNotFoundException;
     List<CustomerDTO> listCustomers();

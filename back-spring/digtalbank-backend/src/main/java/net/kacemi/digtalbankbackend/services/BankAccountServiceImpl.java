@@ -46,9 +46,29 @@ public class BankAccountServiceImpl implements BankAccountService {
     public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
 
         log.info("Saving new customer");
+        customerDTO.setId(UUID.randomUUID().toString());
         Customer customer = customerMapper.fromCustomerDTO(customerDTO);
         Customer savedCustomer = customerRepository.save(customer);
         return customerMapper.fromCustomer(savedCustomer);
+    }
+
+    @Override
+    public CustomerDTO updateCustomer(CustomerDTO customerDTO) {
+        log.info("Updating new customer");
+        Customer customer = customerMapper.fromCustomerDTO(customerDTO);
+        Customer updatedCustomer = customerRepository.save(customer);
+        return customerMapper.fromCustomer(updatedCustomer);
+    }
+
+    @Override
+    public void deleteCustomer(String id) throws CustomerNotFoundException {
+        customerRepository.deleteById(id);
+    }
+
+    @Override
+    public CustomerDTO getCustomer(String customerId) throws CustomerNotFoundException {
+        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new CustomerNotFoundException("No customer found with id: "+customerId));
+        return customerMapper.fromCustomer(customer);
     }
 
     @Override
@@ -110,6 +130,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         }
     }
 
+    //withdrawl
     @Override
     public void debit(String bankAccountId, double amount, String description) throws BankAccountNotFoundException, NotEnoughBalanceException {
         BankAccount bankAccount =  bankAccountRepository.findById(bankAccountId).orElseThrow(()->new BankAccountNotFoundException("Bank account not found"));
@@ -129,6 +150,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         }
     }
 
+    //deposit
     @Override
     public void credit(String bankAccountId, double amount, String description) throws BankAccountNotFoundException {
 
