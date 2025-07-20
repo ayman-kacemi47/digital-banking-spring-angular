@@ -1,9 +1,6 @@
 package net.kacemi.digtalbankbackend.services;
 
-import net.kacemi.digtalbankbackend.dtos.BankAccountDTO;
-import net.kacemi.digtalbankbackend.dtos.CurrentAccountDTO;
-import net.kacemi.digtalbankbackend.dtos.CustomerDTO;
-import net.kacemi.digtalbankbackend.dtos.SavingAccountDTO;
+import net.kacemi.digtalbankbackend.dtos.*;
 import net.kacemi.digtalbankbackend.entities.CurrentAccount;
 import net.kacemi.digtalbankbackend.entities.Customer;
 import net.kacemi.digtalbankbackend.entities.SavingAccount;
@@ -30,4 +27,8 @@ public interface BankAccountService{
     void debit(String bankAccountId, double amount, String description) throws BankAccountNotFoundException, NotEnoughBalanceException;
     void credit(String bankAccountId, double amount, String description) throws BankAccountNotFoundException;
     void transfer(String fromBankAccountId, String toBankAccountId, double amount, String description) throws BankAccountNotFoundException, NotEnoughBalanceException;
+
+    List<OperationDTO> accountHistory(String bankAccountId) throws BankAccountNotFoundException;
+
+    AccountHistoryDTO getAccountHistory(String accountId, int page, int size) throws  BankAccountNotFoundException;
 }

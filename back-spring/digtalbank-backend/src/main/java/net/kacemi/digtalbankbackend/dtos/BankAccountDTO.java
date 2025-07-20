@@ -16,4 +16,6 @@ public class BankAccountDTO {
     private AccountStatus status;
     private String currency;
     private CustomerDTO customer;
+
+    private String type;
 }

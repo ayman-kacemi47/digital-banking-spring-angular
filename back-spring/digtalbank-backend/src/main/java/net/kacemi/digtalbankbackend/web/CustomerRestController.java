@@ -10,6 +10,7 @@ import net.kacemi.digtalbankbackend.services.BankAccountService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @Slf4j
@@ -29,6 +30,7 @@ public class CustomerRestController {
 
     @PostMapping("/customers/save")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO) {
+        customerDTO.setId(UUID.randomUUID().toString());
         return  bankAccountService.saveCustomer(customerDTO);
     }
 

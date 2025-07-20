@@ -78,20 +78,20 @@ public class DigtalbankBackendApplication {
                     }
 
                 }
-                List<BankAccountDTO> bankAccountDTOs = bankAccountService.listBankAccounts();
-                for(BankAccountDTO bankAccountDTO : bankAccountDTOs) {
-                    for(int i = 0 ; i < 10 ; i++){
-                        try {
-                            bankAccountService.credit(bankAccountDTO.getId(), 1000+Math.random()*12444, "Crédit");
+
+            });
+            List<BankAccountDTO> bankAccountDTOs = bankAccountService.listBankAccounts();
+            for(BankAccountDTO bankAccountDTO : bankAccountDTOs) {
+                for(int i = 0 ; i < 10 ; i++){
+                    try {
+                        bankAccountService.credit(bankAccountDTO.getId(), 1000+Math.random()*12444, "Crédit");
                         bankAccountService.debit(bankAccountDTO.getId(), 1000+Math.random()*12444, "débit");
-                        } catch (BankAccountNotFoundException  | NotEnoughBalanceException e) {
-                           // throw new RuntimeException(e);
-                            e.printStackTrace();
+                    } catch (BankAccountNotFoundException  | NotEnoughBalanceException e) {
+                        // throw new RuntimeException(e);
+                        e.printStackTrace();
                     }
                 }
-                }
-            });
-
+            }
 
 
         };
