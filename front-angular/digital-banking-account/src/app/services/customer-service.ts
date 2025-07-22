@@ -1,15 +1,21 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {Customer} from '../models/customer';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomerService {
+  backendHost : string = "http://localhost:8080";
   constructor(private http:HttpClient) {
   }
 
-  public getCustomers():Observable<any>{
-    return this.http.get("http://localhost:8080/customers");
+  public getCustomers():Observable<Array<Customer>>{
+    return this.http.get<Array<Customer>>(this.backendHost+"/customers");
+  }
+
+  searchCustomer(keyword: String):Observable<Array<Customer>> {
+    return this.http.get<Array<Customer>>(this.backendHost+"/customers/search?keyword="+keyword);
   }
 }
