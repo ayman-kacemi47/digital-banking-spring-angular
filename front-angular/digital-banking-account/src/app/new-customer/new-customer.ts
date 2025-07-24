@@ -37,6 +37,7 @@ export class NewCustomer implements OnInit{
     this.customerService.saveCustomer(customer).subscribe({
       next:data =>{
         alert("Customer saved successfully !!");
+        this.newCustomerFormGroup.reset();
       },
       error:err => {
         console.error(err);

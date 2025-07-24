@@ -6,10 +6,18 @@
         <div class="mt-2">
           <label class="form-label" >Name:</label>
           <input class="form-control" formControlName="name" type="text" />
+          @if (newCustomerFormGroup.controls["name"] && newCustomerFormGroup.controls["name"].touched &&    newCustomerFormGroup.controls["name"].errors && newCustomerFormGroup.controls["name"].errors!["required"]) {
+          <span class="text-danger">Name is required  </span>
+
+          }
         </div>
         <div class="mt-2">
           <label class="form-label" >Email:</label>
           <input class="form-control" formControlName="email" type="text" />
+          @if (newCustomerFormGroup.controls["email"] && newCustomerFormGroup.controls["email"].touched &&   newCustomerFormGroup.controls["email"].errors && newCustomerFormGroup.controls["email"].errors!["email"]) {
+            <span class="text-danger">Email is not valid  </span>
+
+          }
         </div>
         <button class="btn btn-primary mt-2" [disabled]="!newCustomerFormGroup.valid">Save</button>
       </form>

@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {CustomerService} from '../services/customer-service';
 import {AsyncPipe, JsonPipe, NgIf} from '@angular/common';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {catchError, Observable, throwError} from 'rxjs';
+import {catchError, map, Observable, throwError} from 'rxjs';
 import {Customer} from '../models/customer';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 
@@ -47,4 +47,24 @@ export class Customers implements OnInit{
     );
   }
 
+  handleDeleteCustomer(c: Customer) {
+    if(confirm("veuillez suprrimer ce customer ?")){
+
+    this.customerService.deleteCustomer(c.id).subscribe({
+      next:data=>{
+        //this.handleSearchCustomers(); // n'est pratique il actualise toute la page
+        this.customers = this.customers.pipe(
+          map(data=>{
+            let index = data.indexOf(c);
+            data.slice(index,1);
+            return data;
+          })
+        );
+      },
+      error:err => {
+        console.error("error deleting customer !\n",err);
+      }
+    })
+    }
+  }
 }
