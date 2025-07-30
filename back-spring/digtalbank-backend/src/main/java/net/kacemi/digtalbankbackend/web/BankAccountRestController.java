@@ -2,11 +2,10 @@ package net.kacemi.digtalbankbackend.web;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.kacemi.digtalbankbackend.dtos.AccountHistoryDTO;
-import net.kacemi.digtalbankbackend.dtos.BankAccountDTO;
-import net.kacemi.digtalbankbackend.dtos.OperationDTO;
-import net.kacemi.digtalbankbackend.dtos.SavingAccountDTO;
+import net.kacemi.digtalbankbackend.dtos.*;
 import net.kacemi.digtalbankbackend.excepetions.BankAccountNotFoundException;
+import net.kacemi.digtalbankbackend.excepetions.CustomerNotFoundException;
+import net.kacemi.digtalbankbackend.excepetions.NotEnoughBalanceException;
 import net.kacemi.digtalbankbackend.services.BankAccountService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +15,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @AllArgsConstructor
+@CrossOrigin("*")
 public class BankAccountRestController {
     BankAccountService bankAccountService;
 
@@ -50,5 +50,27 @@ public class BankAccountRestController {
 
     return bankAccountService.getAccountHistory(accountId, page, size);
 
+    }
+
+
+    @PostMapping("/accounts/debit")
+    public DebitDTO  debit(@RequestBody DebitDTO debitDTO) throws BankAccountNotFoundException, NotEnoughBalanceException {
+        this.bankAccountService.debit(debitDTO.getAccountId(), debitDTO.getAmount(), debitDTO.getDescription());
+        return debitDTO;
+    }
+    @PostMapping("/accounts/credit")
+    public CreditDTO  credit(@RequestBody CreditDTO creditDTO) throws BankAccountNotFoundException {
+        this.bankAccountService.credit(creditDTO.getAccountId(), creditDTO.getAmount(), creditDTO.getDescription());
+        return creditDTO;
+    }
+    @PostMapping("/accounts/transfer")
+    public TransfertRequestDTO  transfert(@RequestBody TransfertRequestDTO transferRequestDto) throws BankAccountNotFoundException, NotEnoughBalanceException {
+        this.bankAccountService.transfer(transferRequestDto.getFromAccount(), transferRequestDto.getToAccount(), transferRequestDto.getAmount(), transferRequestDto.getDescription());
+        return transferRequestDto;
+    }
+
+    @GetMapping("/accounts/customer/{customerId}")
+    public List<BankAccountDTO> getCustomerAccounts(@PathVariable String customerId) throws  CustomerNotFoundException {
+       return this.bankAccountService.customerListBankAccounts(customerId);
     }
 }

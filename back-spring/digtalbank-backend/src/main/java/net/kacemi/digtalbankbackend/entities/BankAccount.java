@@ -29,7 +29,7 @@ public abstract class BankAccount {
     @ManyToOne
     private Customer customer;
 
-    @OneToMany(mappedBy = "bankAccount",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "bankAccount",cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Operation> operations;
 
 
