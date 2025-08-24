@@ -34,9 +34,16 @@ public class SecurityController {
 
     @PostMapping("/login")
     public Map<String, String> login(String username, String password){
+        System.out.println("Login with ...");
+        System.out.println("username: " + username);
+        System.out.println("password: " + password);
+
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         Instant instant = Instant.now();
-
+        System.out.println("isAuthenticated = " + authentication.isAuthenticated());
+        System.out.println("Principal      = " + authentication.getPrincipal());
+        System.out.println("Authorities    = " + authentication.getAuthorities());
+        System.out.println("Credentials    = " + authentication.getCredentials());
         String scope = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(" "));
         JwtClaimsSet jwtClaimsSet= JwtClaimsSet.builder()
                 .issuedAt(instant)

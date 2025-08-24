@@ -8,19 +8,19 @@ import net.kacemi.digtalbankbackend.enums.OperationType;
 import net.kacemi.digtalbankbackend.excepetions.BankAccountNotFoundException;
 import net.kacemi.digtalbankbackend.excepetions.CustomerNotFoundException;
 import net.kacemi.digtalbankbackend.excepetions.NotEnoughBalanceException;
-import net.kacemi.digtalbankbackend.repositories.BankAccountRepository;
-import net.kacemi.digtalbankbackend.repositories.CustomerRepository;
-import net.kacemi.digtalbankbackend.repositories.OperationRepository;
+import net.kacemi.digtalbankbackend.repositories.*;
 import net.kacemi.digtalbankbackend.services.BankAccountService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -96,6 +96,33 @@ public class DigtalbankBackendApplication {
 
         };
     }
+
+    @Bean
+    CommandLineRunner initUsers(AppUserRepository userRepo, AppRoleRepository roleRepo, PasswordEncoder encoder) {
+        return args -> {
+            AppRole userRole = roleRepo.findByRoleName("USER").orElseGet(() -> roleRepo.save(AppRole.builder().roleName("USER").build()));
+            AppRole adminRole = roleRepo.findByRoleName("ADMIN").orElseGet(() -> roleRepo.save(AppRole.builder().roleName("ADMIN").build()));
+
+            if (userRepo.findByUsername("user1").isEmpty()) {
+                AppUser user1 = AppUser.builder()
+                        .username("user1")
+                        .password(encoder.encode("1234"))
+                        .roles(Set.of(userRole))
+                        .build();
+                userRepo.save(user1);
+            }
+
+            if (userRepo.findByUsername("admin").isEmpty()) {
+                AppUser admin = AppUser.builder()
+                        .username("admin")
+                        .password(encoder.encode("1234"))
+                        .roles(Set.of(userRole, adminRole))
+                        .build();
+                userRepo.save(admin);
+            }
+        };
+    }
+
 
     //@Bean
         CommandLineRunner commandLineRunner(BankAccountRepository bankAccountRepository, CustomerRepository customerRepository, OperationRepository operationRepository) {
