@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {Customer} from '../models/customer';
 import {CustomerService} from '../services/customer-service';
 import {catchError, throwError} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-new-customer',
@@ -15,8 +16,9 @@ import {catchError, throwError} from 'rxjs';
 export class NewCustomer implements OnInit{
 
   newCustomerFormGroup!: FormGroup;
+  errorMessage!: string;
 
-  constructor(private fb:FormBuilder, private customerService :CustomerService) {
+  constructor(private fb:FormBuilder, private customerService :CustomerService, private  router:Router) {
     this.newCustomerFormGroup=this.fb.group(
       {
         name: this.fb.control("",[Validators.required, Validators.minLength(2)]),
@@ -33,13 +35,14 @@ export class NewCustomer implements OnInit{
 
   handleSaveCustomer() {
     let customer:Customer = this.newCustomerFormGroup.value;
-    console.log("hande ", customer)
     this.customerService.saveCustomer(customer).subscribe({
       next:data =>{
         alert("Customer saved successfully !!");
-        this.newCustomerFormGroup.reset();
+        //this.newCustomerFormGroup.reset();
+        this.router.navigateByUrl("/customers");
       },
       error:err => {
+        this.errorMessage = err.error["error"];
         console.error(err);
       }
     }

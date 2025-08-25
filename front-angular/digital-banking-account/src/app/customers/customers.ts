@@ -6,6 +6,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {catchError, map, Observable, throwError} from 'rxjs';
 import {Customer} from '../models/customer';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-customers',
@@ -20,7 +21,7 @@ export class Customers implements OnInit{
   customers! : Observable<Array<Customer>>;
   errorMessage!:string;
   searchFormGroup: FormGroup |undefined;
-  constructor(private customerService: CustomerService, private fb: FormBuilder) {
+  constructor(private customerService: CustomerService, private fb: FormBuilder, private router:Router ) {
   }
 
   ngOnInit(): void {
@@ -48,7 +49,7 @@ export class Customers implements OnInit{
   }
 
   handleDeleteCustomer(c: Customer) {
-    if(confirm("veuillez suprrimer ce customer ?")){
+    if(confirm("Are you sure?")){
 
     this.customerService.deleteCustomer(c.id).subscribe({
       next:data=>{
@@ -66,5 +67,11 @@ export class Customers implements OnInit{
       }
     })
     }
+  }
+
+  handleViewCustomer(c: Customer) {
+      if (c.id){
+        this.router.navigateByUrl("/admin/customer-accounts/"+c.id,{state:c});
+      }
   }
 }

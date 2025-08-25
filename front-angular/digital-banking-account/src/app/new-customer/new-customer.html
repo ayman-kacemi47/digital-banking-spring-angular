@@ -1,4 +1,9 @@
 <div class="container">
+  @if (errorMessage) {
+    <div class=" alert alert-danger">
+      {{errorMessage}}
+    </div>
+  }
   <div class="card col-6 offset-3 mt-3">
     <div class="card-header">Add custoemr </div>
     <div class="card-body">

@@ -1,0 +1,63 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      Customer Details
+    </div>
+    <div class="card-body">
+      <div >ID: {{customer.id}}</div>
+      <div >NAME: {{customer.name}}</div>
+      <div >EMAIL: {{customer.email}}</div>
+    </div>
+
+  </div>
+  <div class="dropdown-divider"></div>
+  <div class="card">
+    <div class="card-header">
+      Customer Accounts
+    </div>
+    <div class="card-body table-responsive">
+      @if (customerAccounts | async; as customerAccountList){
+
+        <table class="table">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>BALANCE</th>
+            <th>CURRENCY</th>
+            <th>STATUS</th>
+            <th>TYPE</th>
+            <th>Over Draft</th>
+            <th>Interest Rate</th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (account of customerAccountList; track account.id){
+              <tr>
+                <td>
+                  {{account.id}}
+                </td>  <td>
+                {{account.balance}}
+              </td>  <td>
+                {{account.currency}}
+              </td>  <td>
+                {{account.status}}
+              </td>  <td>
+                {{account.type}}
+              </td> <td>
+                {{account.overDraft ?? "N/A"}}
+              </td><td>
+                {{account.interestRate ?? "N/A"}}
+              </td>
+                <td>
+                  <button  class="btn btn-info" (click)="handleViewAccount(account)" ><i class="bi bi-eye text-white"></i> </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+
+  </div>
+
+</div>

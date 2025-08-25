@@ -30,7 +30,7 @@
                 <td>{{ c.id }}</td>
                 <td>{{ c.name }}</td>
                 <td>{{ c.email }}</td>
-                <td><button class="btn btn-danger" (click)="handleDeleteCustomer(c)" > <i class="bi bi-trash"></i> </button> </td>
+                <td><button class="btn m-1 btn-danger" (click)="handleDeleteCustomer(c)" data-toggle="tooltip" data-placement="top" title="Delete customer" > <i class="bi bi-trash"></i> </button> <button class="m-1 btn btn-info" (click)="handleViewCustomer(c)" data-toggle="tooltip" data-placement="top" title="Customer accounts" > <i class="bi bi-journal-text text-white"></i> </button> </td>
               </tr>
             } @empty {
               <tr>
